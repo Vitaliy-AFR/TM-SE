@@ -1,2 +1,5 @@
-package org.example;public class Project {
+package org.example;
+
+public class Project {
+    String name;
 }
