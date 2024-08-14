@@ -10,9 +10,9 @@ public class Terminal_logic {
 
     protected static String command = "";
     protected static final String EXIT = "exit";
-    protected static final String HELP = "help";
-    protected static final String CREATE_PROJECT = "create project";
-    protected static final String LIST_OF_PROJECT = "list of projects";
+    private static final String HELP = "help";
+    private static final String CREATE_PROJECT = "create project";
+    private static final String LIST_OF_PROJECT = "list of projects";
 
     static List<String> commands = new ArrayList<>();
     private static void commandsInit(){
