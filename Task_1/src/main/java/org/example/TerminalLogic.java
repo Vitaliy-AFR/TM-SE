@@ -9,6 +9,7 @@ import java.util.List;
 public class TerminalLogic {
 
     protected String command = "";
+
     //Команды
     protected final String EXIT = "exit";
     private final String HELP = "help";
