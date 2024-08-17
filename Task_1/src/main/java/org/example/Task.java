@@ -1,9 +1,12 @@
 package org.example;
 
+import java.util.List;
+
 public class Task {
     private String name;
     private String description;
     private int number;
+    Project project;
 
     public Task(String name, int number) {
         this.name = name;
