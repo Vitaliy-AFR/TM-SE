@@ -14,13 +14,6 @@ public class ProjectRepository {
 
     private static ProjectRepository instance;
 
-    //Сообщения
-
-
-    //Добавление данных в мап должно быть в этом классе
-    //адд, делет и тд
-
-
     private ProjectRepository() {
     }
 
