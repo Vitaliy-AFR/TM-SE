@@ -13,6 +13,8 @@ public class TerminalLogic {
     private final String CREATE_PROJECT = "create project";
     private final String LIST_OF_PROJECTS = "list of projects";
     private final String SHOW_PROJECT = "show project";
+    private final String CHANGE_PROJECT = "change project";
+    private final String DELETE_PROJECT = "delete project";
 
     //Сообщения
     public static final String NONE_PROJECT = "Ни одного проекта еще не создано";
@@ -30,14 +32,18 @@ public class TerminalLogic {
         commands.add(HELP + " - Вызов справки");
         commands.add(CREATE_PROJECT + " - Создание нового проекта");
         commands.add(LIST_OF_PROJECTS + " - Показать список всех проектов");
-        commands.add(SHOW_PROJECT + " - Показать проект № ...");
+        commands.add(SHOW_PROJECT + " - Показать проект");
+        commands.add(CHANGE_PROJECT + " - Изменить проект");
+        commands.add(DELETE_PROJECT + " - Удалить проект");
     }
 
     protected void commandProcessing(String command) {
         if (command.equalsIgnoreCase(HELP)) help();
         else if (command.equalsIgnoreCase(CREATE_PROJECT)) createProject();
         else if (command.equalsIgnoreCase(LIST_OF_PROJECTS)) listOfProjects();
-        else if (command.equalsIgnoreCase(SHOW_PROJECT)) showProjectNumber();
+        else if (command.equalsIgnoreCase(SHOW_PROJECT)) showProject();
+        else if (command.equalsIgnoreCase(CHANGE_PROJECT)) changeProject();
+        else if (command.equalsIgnoreCase(DELETE_PROJECT)) deleteProject();
         else if (command.equalsIgnoreCase(EXIT)) System.out.println(EXIT_THE_PROGRAM);
         else System.out.println(INVALID_COMMAND);
     }
@@ -61,9 +67,21 @@ public class TerminalLogic {
         System.out.println("\n" + ENTER_NEW_COMMAND);
     }
 
-    private void showProjectNumber() {
+    private void showProject() {
         ProjectRepository projectRepository = ProjectRepository.getInstance();
-        projectRepository.showProjectNumber();
+        projectRepository.showProject();
+        System.out.println("\n" + ENTER_NEW_COMMAND);
+    }
+
+    private void changeProject() {
+        ProjectRepository projectRepository = ProjectRepository.getInstance();
+        projectRepository.changeProject();
+        System.out.println("\n" + ENTER_NEW_COMMAND);
+    }
+
+    private void deleteProject() {
+        ProjectRepository projectRepository = ProjectRepository.getInstance();
+        projectRepository.deleteProject();
         System.out.println("\n" + ENTER_NEW_COMMAND);
     }
 
