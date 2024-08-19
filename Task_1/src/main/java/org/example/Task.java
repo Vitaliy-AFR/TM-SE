@@ -1,11 +1,16 @@
 package org.example;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Data
 public class Task {
     private String name;
     private String description;
-    private int number;
+    private final int number;
     Project project;
 
     public Task(String name, int number) {
@@ -13,27 +18,4 @@ public class Task {
         this.number = number;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
 }

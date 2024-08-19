@@ -1,27 +1,15 @@
 package org.example;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString(onlyExplicitlyIncluded = true)
-@RequiredArgsConstructor
+@Data
+@Builder
 public class Project {
-    @ToString.Include
     private String name;
-    private String description;
-    @ToString.Include
-    private int number;
-    List<Task> tasks;
-
-    public Project(String name, int number) {
-        this.name = name;
-        this.number = number;
-    }
-
+    @ToString.Exclude private String description;
+    private final int number;
+    @ToString.Exclude private final List<Task> tasks = new ArrayList<>();
 }

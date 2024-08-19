@@ -6,14 +6,9 @@ import java.io.InputStreamReader;
 
 public class Terminal {
 
-    public static void run() {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            TerminalLogic terminalLogic = new TerminalLogic();
-            while (!(terminalLogic.command.equalsIgnoreCase(terminalLogic.EXIT))) {
-                terminalLogic.command = reader.readLine();
-                terminalLogic.commandProcessing(terminalLogic.command);
-            }
-        } catch (IOException ignore){}
+    public void run() {
+        TerminalLogic terminalLogic = new TerminalLogic();
+        terminalLogic.commandProcessing();
     }
 
 }
