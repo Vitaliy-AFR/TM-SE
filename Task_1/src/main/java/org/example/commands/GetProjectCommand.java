@@ -31,11 +31,13 @@ public class GetProjectCommand implements Commands {
         int number = 0;
         try {
             number = scanner.nextInt();
+            scanner.nextLine();
         } catch (InputMismatchException e) {
             System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
         }
         if (number > projects.size()) {
             System.out.println(terminalLogic.getPROJECT_WITH_SUCH_NUMBER_NOT_YET_CREATED());
+            scanner.close();
         } else if (number <= 0) {
             System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
         } else {

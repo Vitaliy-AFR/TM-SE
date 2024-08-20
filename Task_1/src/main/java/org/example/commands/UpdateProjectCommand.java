@@ -30,6 +30,7 @@ public class UpdateProjectCommand implements Commands {
         int number = 0;
         try {
             number = scanner.nextInt();
+            scanner.nextLine();
         } catch (InputMismatchException e) {
             System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
         }
