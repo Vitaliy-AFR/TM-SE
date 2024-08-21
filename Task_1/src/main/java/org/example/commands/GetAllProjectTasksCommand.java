@@ -2,15 +2,15 @@ package org.example.commands;
 
 import org.example.TerminalLogic;
 
-public class DeleteTaskProject implements Commands{
+public class GetAllProjectTasksCommand implements Commands{
     @Override
     public String nameOfCommand() {
-        return "delete task";
+        return "get all project tasks";
     }
 
     @Override
     public String description() {
-        return "Удалить задачу";
+        return "Показать список всех задач проекта";
     }
 
     @Override

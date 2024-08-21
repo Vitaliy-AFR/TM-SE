@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class CreateProjectCommand implements Commands {
     @Override
     public String description() {
-        return "Создание проекта";
+        return "Создать проект";
     }
 
     @Override
