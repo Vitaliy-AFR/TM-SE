@@ -7,22 +7,21 @@ import org.example.TerminalLogic;
 import java.util.Map;
 import java.util.Scanner;
 
-public class UpdateTaskCommand implements Commands{
+public class DeleteTaskCommand implements Commands{
     @Override
     public String nameOfCommand() {
-        return "update task";
+        return "delete task";
     }
 
     @Override
     public String description() {
-        return "Изменить задачу";
+        return "Удалить задачу";
     }
 
     @Override
     public void execute(TerminalLogic terminalLogic) {
         Map<String, Task> tasks = terminalLogic.getTaskRepository().getTasks();
         Map<Integer, Project> projects = terminalLogic.getProjectRepository().getProjects();
-        Scanner scanner = terminalLogic.getScanner();
         if (!tasksExist(terminalLogic)) {
             return;
         }
@@ -32,10 +31,9 @@ public class UpdateTaskCommand implements Commands{
             return;
         }
         Task task = tasks.get(nameOfTask);
-        System.out.println("Введите новое описание задачи:");
-        String description = scanner.nextLine();
-        tasks.get(nameOfTask).setDescription(description);
-        projects.get(task.getNumberOfProject()).getTasks().get(task.getNumber() - 1).setDescription(description);
+        projects.get(task.getNumberOfProject()).getTasks().remove(task);
+        terminalLogic.getTaskRepository().getTasks().remove(nameOfTask);
+        System.out.println(String.format("Задача с именем %s удалена", nameOfTask));
     }
 
     private boolean tasksExist(TerminalLogic terminalLogic) {
@@ -53,5 +51,4 @@ public class UpdateTaskCommand implements Commands{
         String nameOfTask = scanner.nextLine();
         return nameOfTask;
     }
-
 }

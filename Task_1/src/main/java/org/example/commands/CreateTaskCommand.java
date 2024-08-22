@@ -46,8 +46,8 @@ public class CreateTaskCommand implements Commands{
         Project project = projects.get(numberOfProject);
         int numberOfTask = project.getTasks().size() + 1;
         Task task = Task.builder().name(nameOfTask).number(numberOfTask).numberOfProject(numberOfProject).build();
-        project.getTasks().add(task);
         terminalLogic.getTaskRepository().getTasks().put(nameOfTask, task);
+        project.getTasks().add(terminalLogic.getTaskRepository().getTasks().get(nameOfTask));
         System.out.println("Вы хотите добавить описание к задаче? yes/no");
         String answer = scanner.nextLine();
         if (addDescription(answer)) {
@@ -74,7 +74,7 @@ public class CreateTaskCommand implements Commands{
     private boolean correctProjectNumber(TerminalLogic terminalLogic, int number) {
         Map<Integer, Project> projects = terminalLogic.getProjectRepository().getProjects();
         if (number > projects.size()) {
-            System.out.println(terminalLogic.getPROJECT_WITH_SUCH_NUMBER_NOT_YET_CREATED());
+            System.out.println(terminalLogic.getPROJECT_NOT_EXIST());
             return false;
         } else if (number <= 0) {
             System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());

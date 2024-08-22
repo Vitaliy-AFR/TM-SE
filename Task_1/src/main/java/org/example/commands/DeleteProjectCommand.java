@@ -33,9 +33,11 @@ public class DeleteProjectCommand implements Commands {
             scanner.nextLine();
         } catch (InputMismatchException e) {
             System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
+            scanner.nextLine();
+            return;
         }
         if (number > projects.size()) {
-            System.out.println("Проект с таким номером еще не создан");
+            System.out.println(terminalLogic.getPROJECT_NOT_EXIST());
         } else if (number <= 0) {
             System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
         } else {

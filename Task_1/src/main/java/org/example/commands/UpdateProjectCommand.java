@@ -35,7 +35,7 @@ public class UpdateProjectCommand implements Commands {
             System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
         }
         if (number > projects.size()) {
-            System.out.println(terminalLogic.getPROJECT_WITH_SUCH_NUMBER_NOT_YET_CREATED());
+            System.out.println(terminalLogic.getPROJECT_NOT_EXIST());
         } else {
             while (true) {
                 System.out.println("Введите название графы, которую вы хотите изменить: name/description (чтобы отменить изменение, введите cancel)");

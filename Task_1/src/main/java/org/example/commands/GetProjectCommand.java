@@ -36,7 +36,7 @@ public class GetProjectCommand implements Commands {
             System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
         }
         if (number > projects.size()) {
-            System.out.println(terminalLogic.getPROJECT_WITH_SUCH_NUMBER_NOT_YET_CREATED());
+            System.out.println(terminalLogic.getPROJECT_NOT_EXIST());
         } else if (number <= 0) {
             System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
         } else {

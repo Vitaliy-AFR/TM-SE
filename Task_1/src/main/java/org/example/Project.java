@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 public class Project {
     private String name;
-    @ToString.Exclude private String description;
+    private String description;
     private final int number;
     @ToString.Exclude private final List<Task> tasks = new ArrayList<>();
 }

@@ -21,6 +21,9 @@ public class GetTaskCommand implements Commands {
 
     @Override
     public void execute(TerminalLogic terminalLogic) {
+        if (!tasksExist(terminalLogic)) {
+            return;
+        }
         Scanner scanner = terminalLogic.getScanner();
         System.out.println("Введите номер проекта:");
         int numberOfProject = getNumber(terminalLogic);
@@ -33,6 +36,15 @@ public class GetTaskCommand implements Commands {
             return;
         }
         printTask(terminalLogic, nameOfTask);
+    }
+
+    private boolean tasksExist(TerminalLogic terminalLogic) {
+        Map<String, Task> tasks = terminalLogic.getTaskRepository().getTasks();
+        if (tasks.size() == 0) {
+            System.out.println(terminalLogic.getNONE_TASK());
+            return false;
+        }
+        return true;
     }
 
     private int getNumber (TerminalLogic terminalLogic){
@@ -50,7 +62,7 @@ public class GetTaskCommand implements Commands {
     private boolean correctProjectNumber(TerminalLogic terminalLogic, int number) {
         Map<Integer, Project> projects = terminalLogic.getProjectRepository().getProjects();
         if (number > projects.size()) {
-            System.out.println(terminalLogic.getPROJECT_WITH_SUCH_NUMBER_NOT_YET_CREATED());
+            System.out.println(terminalLogic.getPROJECT_NOT_EXIST());
             return false;
         } else if (number <= 0) {
             System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
@@ -64,7 +76,7 @@ public class GetTaskCommand implements Commands {
         Map<String, Task> tasks = terminalLogic.getTaskRepository().getTasks();
 
         if (!tasks.containsKey(name)) {
-            System.out.println(terminalLogic.getTASK_WITH_SUCH_NAME_NOT_YET_CREATED());
+            System.out.println(String.format(terminalLogic.getTASK_NOT_EXIST(), name));
             return false;
         } else {
             return true;
