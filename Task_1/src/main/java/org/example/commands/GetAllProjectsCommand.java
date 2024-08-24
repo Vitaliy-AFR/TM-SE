@@ -9,7 +9,7 @@ import java.util.Map;
 public class GetAllProjectsCommand implements Commands{
     @Override
     public String description() {
-        return "Вывести список всех проектов (отображение только имени и номера проекта)";
+        return "Показать список всех проектов";
     }
 
     @Override

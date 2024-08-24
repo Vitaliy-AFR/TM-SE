@@ -8,7 +8,7 @@ import java.util.*;
 @Data
 public class TerminalLogic {
 
-    private final String PROJECT_WITH_SUCH_NUMBER_NOT_YET_CREATED = "Проект с таким номером еще не создан";
+
     private final Map<String, Commands> commands = new HashMap<>();
     private final Scanner scanner = new Scanner(System.in);
     private final ProjectRepository projectRepository = new ProjectRepository();
@@ -19,6 +19,9 @@ public class TerminalLogic {
     private final String INCORRECT_NUMBER_ENTERED = "Введено некорректное число";
     private final String ENTER_NEW_COMMAND = "\nВведите новую команду";
     private final String INVALID_COMMAND = "Введена некорректная команда";
+    private final String PROJECT_NOT_EXIST = "Проект с таким номером еще не создан";
+    private final String NONE_TASK = "Ни одна задача еще не создана";
+    private final String TASK_NOT_EXIST = "Задача с именем %s не существует";
 
 
     public TerminalLogic() {
@@ -29,6 +32,12 @@ public class TerminalLogic {
         commands.put(new GetProjectCommand().nameOfCommand(), new GetProjectCommand());
         commands.put(new UpdateProjectCommand().nameOfCommand(), new UpdateProjectCommand());
         commands.put(new DeleteProjectCommand().nameOfCommand(), new DeleteProjectCommand());
+        commands.put(new CreateTaskCommand().nameOfCommand(), new CreateTaskCommand());
+        commands.put(new GetAllTasksCommand().nameOfCommand(), new GetAllTasksCommand());
+        commands.put(new GetAllProjectTasksCommand().nameOfCommand(), new GetAllProjectTasksCommand());
+        commands.put(new GetTaskCommand().nameOfCommand(), new GetTaskCommand());
+        commands.put(new UpdateTaskCommand().nameOfCommand(), new UpdateTaskCommand());
+        commands.put(new DeleteTaskCommand().nameOfCommand(), new DeleteTaskCommand());
 
     }
 
