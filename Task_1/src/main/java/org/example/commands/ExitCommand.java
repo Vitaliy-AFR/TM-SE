@@ -2,7 +2,7 @@ package org.example.commands;
 
 import org.example.TerminalLogic;
 
-public class ExitCommand implements Commands {
+public class ExitCommand extends Commands {
     @Override
     public String description() {
         return "Закрыть программу";
@@ -14,7 +14,7 @@ public class ExitCommand implements Commands {
     }
 
     @Override
-    public void execute(TerminalLogic terminalLogic) {
+    public void execute() {
         System.out.println("Завершение работы");
         System.exit(0);
 

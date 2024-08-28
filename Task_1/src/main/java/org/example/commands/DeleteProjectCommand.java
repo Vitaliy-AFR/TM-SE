@@ -1,13 +1,20 @@
 package org.example.commands;
 
+import org.example.LineReader;
 import org.example.Project;
 import org.example.TerminalLogic;
+import org.example.repository.ProjectRepository;
 
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
-public class DeleteProjectCommand implements Commands {
+public class DeleteProjectCommand extends Commands {
+
+    private ProjectRepository projectRepository = ProjectRepository.getInstance();
+    private LineReader reader = LineReader.getInstance();
+    long id = 0;
+
     @Override
     public String nameOfCommand() {
         return "delete project";
@@ -19,31 +26,16 @@ public class DeleteProjectCommand implements Commands {
     }
 
     @Override
-    public void execute(TerminalLogic terminalLogic) {
-        Scanner scanner = terminalLogic.getScanner();
-        Map<Integer, Project> projects = terminalLogic.getProjectRepository().getProjects();
-        if (projects.size() == 0) {
-            System.out.println(terminalLogic.getNONE_PROJECT());
-            return;
-        }
-        System.out.println("Введите номер проекта:");
-        int number = 0;
+    public void execute() {
         try {
-            number = scanner.nextInt();
-            scanner.nextLine();
+            projectRepository.isEmpty();
+            System.out.println("Введите номер проекта:");
+            id = reader.readLong();
         } catch (InputMismatchException e) {
-            System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
-            scanner.nextLine();
             return;
         }
-        if (number > projects.size()) {
-            System.out.println(terminalLogic.getPROJECT_NOT_EXIST());
-        } else if (number <= 0) {
-            System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
-        } else {
-            projects.remove(number);
-            System.out.println("Проект №" + number + " удален");
-        }
+        projectRepository.remove(id);
+
     }
 
 }

@@ -1,12 +1,20 @@
 package org.example.commands;
 
-import org.example.Project;
-import org.example.TerminalLogic;
+import org.example.LineReader;
+import org.example.repository.ProjectRepository;
 
-import java.util.Map;
-import java.util.Scanner;
+public class CreateProjectCommand extends Commands {
 
-public class CreateProjectCommand implements Commands {
+    private final String NO = "no";
+    private final String YES = "yes";
+    private final String NO_DESCRIPTION = "Проект %s пока не содержит описание. Вы можете добавить описание позже.";
+    private final String NO_END_DATE = "Проект %s пока не содержит дату окончания. Вы можете добавить ее позже.";
+
+    private ProjectRepository projectRepository = ProjectRepository.getInstance();
+    private LineReader reader = LineReader.getInstance();
+    private long id;
+    private String name;
+
     @Override
     public String description() {
         return "Создать проект";
@@ -18,24 +26,38 @@ public class CreateProjectCommand implements Commands {
     }
 
     @Override
-    public void execute(TerminalLogic terminalLogic) {
-        Scanner scanner = terminalLogic.getScanner();
-        Map<Integer, Project> projects = terminalLogic.getProjectRepository().getProjects();
+    public void execute() {
         System.out.println("Введите имя нового проекта:");
-        String name = scanner.nextLine();
-        int number = projects.size() + 1;
-        projects.put(number, Project.builder().name(name).number(number).build());
-        System.out.println("Вы хотите добавить описание к проекту? yes/no");
-        String answer = scanner.nextLine();
-        if (answer.equalsIgnoreCase("yes")) {
-            System.out.println("Введите описание к проекту:");
-            projects.get(number).setDescription(scanner.nextLine());
-        } else if (answer.equalsIgnoreCase("no")) {
-            System.out.println("Проект " + name + " пока не содержит описание. Вы можете добавить описание позже.");
-        } else {
-            System.out.println("Некорректный отевет. Проект " + name + " пока не содержит описание. Вы можете добавить описание позже.");
-        }
-        System.out.println("Создан проект №" + number + ": " + name);
-
+        name = reader.readString();
+        id = projectRepository.createNewProject(name);
+        addDescription();
+        addEndDate();
+        System.out.println("Создан проект:");
+        projectRepository.findOne(id);
     }
+
+    private void addDescription() {
+        System.out.println("Вы хотите добавить описание к проекту? yes/no");
+        String answer = reader.readString();
+        if (answer.equalsIgnoreCase(YES)) {
+            projectRepository.addDescriptionProject(id);
+        } else if (answer.equalsIgnoreCase(NO)) {
+            System.out.println(String.format(NO_DESCRIPTION, name));
+        } else {
+            System.out.println(INCORRECT_ANSWER + ". " + String.format(NO_DESCRIPTION, name));
+        }
+    }
+
+    private void addEndDate() {
+        System.out.println("Вы хотите добавить дату окончания проекта? yes/no");
+        String answer = reader.readString();
+        if (answer.equalsIgnoreCase(YES)) {
+            projectRepository.addEndDateProject(id);
+        } else if (answer.equalsIgnoreCase(NO)) {
+            System.out.println(String.format(NO_END_DATE, name));
+        } else {
+            System.out.println(INCORRECT_ANSWER + ". " + String.format(NO_END_DATE, name));
+        }
+    }
+
 }
