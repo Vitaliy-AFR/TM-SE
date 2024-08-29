@@ -1,40 +1,43 @@
 package org.example.commands;
 
 import org.example.LineReader;
+import org.example.Project;
 import org.example.Task;
+import org.example.TerminalLogic;
 import org.example.repository.ProjectRepository;
 import org.example.repository.TaskRepository;
 
 import java.util.InputMismatchException;
+import java.util.Map;
+import java.util.Scanner;
 
-public class DeleteProjectCommand extends Commands {
+public class GetTaskCommand extends Commands {
 
-    private ProjectRepository projectRepository = ProjectRepository.getInstance();
     private TaskRepository taskRepository = TaskRepository.getInstance();
+    private ProjectRepository projectRepository = ProjectRepository.getInstance();
     private LineReader reader = LineReader.getInstance();
-    long id;
+    private long id;
 
     @Override
     public String nameOfCommand() {
-        return "delete project";
+        return "get task";
     }
 
     @Override
     public String description() {
-        return "Удалить проект";
+        return "Показать задачу";
     }
 
     @Override
     public void execute() {
         try {
-            projectRepository.isEmpty();
-            System.out.println("Введите номер проекта:");
+            taskRepository.isEmpty();
+            System.out.println("Введите номер задачи");
             id = reader.readLong();
-        } catch (InputMismatchException e) {
+        } catch (Exception e) {
             return;
         }
-        taskRepository.removeAllForProject(id);
-        projectRepository.remove(id);
+        taskRepository.findOne(id);
     }
 
 }

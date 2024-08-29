@@ -5,8 +5,7 @@ import org.example.repository.ProjectRepository;
 
 public class CreateProjectCommand extends Commands {
 
-    private final String NO = "no";
-    private final String YES = "yes";
+
     private final String NO_DESCRIPTION = "Проект %s пока не содержит описание. Вы можете добавить описание позже.";
     private final String NO_END_DATE = "Проект %s пока не содержит дату окончания. Вы можете добавить ее позже.";
 
@@ -29,7 +28,7 @@ public class CreateProjectCommand extends Commands {
     public void execute() {
         System.out.println("Введите имя нового проекта:");
         name = reader.readString();
-        id = projectRepository.createNewProject(name);
+        id = projectRepository.createNew(name);
         addDescription();
         addEndDate();
         System.out.println("Создан проект:");
@@ -40,7 +39,7 @@ public class CreateProjectCommand extends Commands {
         System.out.println("Вы хотите добавить описание к проекту? yes/no");
         String answer = reader.readString();
         if (answer.equalsIgnoreCase(YES)) {
-            projectRepository.addDescriptionProject(id);
+            projectRepository.addDescription(id);
         } else if (answer.equalsIgnoreCase(NO)) {
             System.out.println(String.format(NO_DESCRIPTION, name));
         } else {
@@ -52,7 +51,7 @@ public class CreateProjectCommand extends Commands {
         System.out.println("Вы хотите добавить дату окончания проекта? yes/no");
         String answer = reader.readString();
         if (answer.equalsIgnoreCase(YES)) {
-            projectRepository.addEndDateProject(id);
+            projectRepository.addEndDate(id);
         } else if (answer.equalsIgnoreCase(NO)) {
             System.out.println(String.format(NO_END_DATE, name));
         } else {

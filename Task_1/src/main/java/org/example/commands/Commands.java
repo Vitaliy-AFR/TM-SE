@@ -11,5 +11,7 @@ public abstract class Commands {
 
 
     protected final String INCORRECT_ANSWER = "Некорректный ответ";
+    protected final String NO = "no";
+    protected final String YES = "yes";
 
 }

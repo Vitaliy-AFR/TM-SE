@@ -4,9 +4,9 @@ import lombok.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @Builder
@@ -16,7 +16,7 @@ public class Project {
     private String description;
     private final GregorianCalendar startDate = new GregorianCalendar();
     private GregorianCalendar endDate;
-    private final List<Task> tasks = new ArrayList<>();
+    private final Map<Long, Task> tasks = new HashMap<>();
 
     @Override
     public String toString() {

@@ -20,12 +20,12 @@ public class CommandRepository {
         commands.put(new UpdateProjectCommand().nameOfCommand(), new UpdateProjectCommand());
         commands.put(new DeleteProjectCommand().nameOfCommand(), new DeleteProjectCommand());
         commands.put(new DeleteAllProjectsCommand().nameOfCommand(), new DeleteAllProjectsCommand());
-//        commands.put(new CreateTaskCommand().nameOfCommand(), new CreateTaskCommand());
-//        commands.put(new GetAllTasksCommand().nameOfCommand(), new GetAllTasksCommand());
-//        commands.put(new GetAllProjectTasksCommand().nameOfCommand(), new GetAllProjectTasksCommand());
-//        commands.put(new GetTaskCommand().nameOfCommand(), new GetTaskCommand());
-//        commands.put(new UpdateTaskCommand().nameOfCommand(), new UpdateTaskCommand());
-//        commands.put(new DeleteTaskCommand().nameOfCommand(), new DeleteTaskCommand());
+        commands.put(new CreateTaskCommand().nameOfCommand(), new CreateTaskCommand());
+        commands.put(new GetTaskCommand().nameOfCommand(), new GetTaskCommand());
+        commands.put(new GetAllTasksCommand().nameOfCommand(), new GetAllTasksCommand());
+        commands.put(new GetAllTasksForProjectCommand().nameOfCommand(), new GetAllTasksForProjectCommand());
+        commands.put(new UpdateTaskCommand().nameOfCommand(), new UpdateTaskCommand());
+        commands.put(new DeleteTaskCommand().nameOfCommand(), new DeleteTaskCommand());
     }
 
     public void getAllCommands() {

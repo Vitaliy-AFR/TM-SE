@@ -16,7 +16,7 @@ public class ProjectRepository {
     private LineReader reader = LineReader.getInstance();
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-    private final String PROJECT_NOT_EXIST = "Проект с таким номером еще не создан";
+    private final String PROJECT_NOT_EXIST = "Проект с таким номером не существует";
     private final String INCORRECT_NUMBER_ENTERED = "Введено некорректное число";
     private final String NONE_PROJECT = "Ни одного проекта еще не создано";
     private final String All_PROJECTS_DELETED = "Все проекты удалены";
@@ -28,7 +28,7 @@ public class ProjectRepository {
         return instance;
     }
 
-    public long createNewProject(String name) {
+    public long createNew(String name) {
         long id = projects.size() + 1;
         Project project = Project
                 .builder()
@@ -39,13 +39,13 @@ public class ProjectRepository {
         return id;
     }
 
-    public void addDescriptionProject(long id) {
+    public void addDescription(long id) {
         System.out.println("Введите описание к проекту:");
         String description = reader.readString();
         projects.get(id).setDescription(description);
     }
 
-    public void addEndDateProject(long id) {
+    public void addEndDate(long id) {
         System.out.println("Введите дату окончания проекта:");
         while (true){
             String endDateString = reader.readString();
