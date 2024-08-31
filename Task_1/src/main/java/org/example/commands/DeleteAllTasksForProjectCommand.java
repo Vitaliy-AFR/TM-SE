@@ -34,6 +34,7 @@ public class DeleteAllTasksForProjectCommand extends Commands{
             projectRepository.findOne(projectId);
         } else {
             taskRepository.removeAllForProject(projectId);
+            System.out.println("Все задачи удалены из проекта №" + projectId);
         }
     }
 }

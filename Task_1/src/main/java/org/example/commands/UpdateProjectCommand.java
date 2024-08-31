@@ -9,7 +9,7 @@ public class UpdateProjectCommand extends Commands {
 
     private ProjectRepository projectRepository = ProjectRepository.getInstance();
     private LineReader reader = LineReader.getInstance();
-    long id = 0;
+    private long id = 0;
 
     @Override
     public String description() {
@@ -45,10 +45,13 @@ public class UpdateProjectCommand extends Commands {
                 break;
             } else if (column.equalsIgnoreCase("name")) {
                 projectRepository.addNewNameProject(id);
+                System.out.println("Имя проекта успешно изменено");
             } else if (column.equalsIgnoreCase("description")) {
                 projectRepository.addDescription(id);
+                System.out.println("Описание проекта успешно изменено");
             } else if (column.equalsIgnoreCase("end date")) {
                 projectRepository.addEndDate(id);
+                System.out.println("Дата окончания проекта успешно изменена");
             }
         }
     }

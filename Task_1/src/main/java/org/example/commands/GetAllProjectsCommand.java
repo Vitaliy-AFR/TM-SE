@@ -1,10 +1,6 @@
 package org.example.commands;
 
-import org.example.Project;
-import org.example.TerminalLogic;
 import org.example.repository.ProjectRepository;
-
-import java.util.Map;
 
 public class GetAllProjectsCommand extends Commands{
 

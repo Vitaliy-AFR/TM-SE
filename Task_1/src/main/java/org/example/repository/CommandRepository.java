@@ -26,6 +26,8 @@ public class CommandRepository {
         commands.put(new GetAllTasksForProjectCommand().nameOfCommand(), new GetAllTasksForProjectCommand());
         commands.put(new UpdateTaskCommand().nameOfCommand(), new UpdateTaskCommand());
         commands.put(new DeleteTaskCommand().nameOfCommand(), new DeleteTaskCommand());
+        commands.put(new DeleteAllTasksCommand().nameOfCommand(), new DeleteAllTasksCommand());
+        commands.put(new DeleteAllTasksForProjectCommand().nameOfCommand(), new DeleteAllTasksForProjectCommand());
     }
 
     public void getAllCommands() {

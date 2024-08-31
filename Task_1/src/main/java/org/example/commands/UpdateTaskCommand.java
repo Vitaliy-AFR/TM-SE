@@ -45,10 +45,13 @@ public class UpdateTaskCommand extends Commands{
                 break;
             } else if (column.equalsIgnoreCase("name")) {
                 taskRepository.addNewNameTask(id);
+                System.out.println("Имя задачи успешно изменено");
             } else if (column.equalsIgnoreCase("description")) {
                 taskRepository.addDescription(id);
+                System.out.println("Описание задачи успешно изменено");
             } else if (column.equalsIgnoreCase("end date")) {
                 taskRepository.addEndDate(id);
+                System.out.println("Дата задачи успешно изменена");
             }
         }
     }

@@ -1,11 +1,6 @@
 package org.example.commands;
 
-import org.example.TerminalLogic;
 import org.example.repository.CommandRepository;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class HelpCommand extends Commands{
 

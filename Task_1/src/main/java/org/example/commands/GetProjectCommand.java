@@ -10,7 +10,7 @@ public class GetProjectCommand extends Commands {
 
     private LineReader reader = LineReader.getInstance();
     private ProjectRepository projectRepository = ProjectRepository.getInstance();
-    long id = 0;
+    private long id = 0;
 
     @Override
     public String description() {

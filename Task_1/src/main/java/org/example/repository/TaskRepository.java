@@ -7,13 +7,15 @@ import org.example.Task;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Data
 public class TaskRepository {
 
-    protected final String NONE_TASK = "Ни одна задача еще не создана";
-    protected final String TASK_NOT_EXIST = "Задача c таким номером не существует";
+    private final String NONE_TASK = "Ни одной задачи не существует";
+    private final String TASK_NOT_EXIST = "Задача c таким номером не существует";
     private final String INCORRECT_NUMBER_ENTERED = "Введено некорректное число";
 
     private final Map<Long, Task> tasks = new HashMap<>();
@@ -58,27 +60,27 @@ public class TaskRepository {
 
     public void addEndDate(long id) {
         System.out.println("Введите дату окончания задачи:");
-        while (true){
-            String endDateString = reader.readString();
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-            Date endDate;
+        String endDateString = "";
+        while (!endDateString.equalsIgnoreCase("cancel")) {
+            endDateString = reader.readString() + " 23:59:59";
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
             try {
-                endDate = formatter.parse(endDateString);
-                GregorianCalendar endDateGregorian = new GregorianCalendar();
-                endDateGregorian.setTime(endDate);
-                if (endDateGregorian.before(tasks.get(id).getStartDate())) {
-                    System.out.println("Дата окончания не может быть раньше даты создания. Введите дату еще раз");
+                LocalDateTime endDate = LocalDateTime.parse(endDateString, formatter);
+                if (endDate.isBefore(tasks.get(id).getStartDate())) {
+                    System.out.println("Дата окончания не может быть раньше даты создания. Введите дату еще раз или \"cancel\" для отмены");
                 } else {
-                    tasks.get(id).setEndDate(endDateGregorian);
-                    projectRepository.getProjects()
+                    tasks.get(id).setEndDate(endDate);
+                    projectRepository
+                            .getProjects()
                             .get(tasks.get(id).getProjectId())
                             .getTasks()
                             .get(id)
-                            .setEndDate(endDateGregorian);
+                            .setEndDate(endDate);
                     break;
                 }
-            } catch (ParseException e) {
-                System.out.println("Дата введена неверно");
+            } catch (Exception e) {
+                if (!endDateString.equalsIgnoreCase("cancel"))
+                System.out.println("Дата введена неверно. Введите дату еще раз или \"cancel\" для отмены");
             }
         }
 
@@ -102,7 +104,7 @@ public class TaskRepository {
 
     public void findAll() {
         System.out.println("Список всех задач:");
-        for (Task task : tasks.values()){
+        for (Task task : tasks.values()) {
             System.out.println(task);
         }
     }
@@ -125,7 +127,7 @@ public class TaskRepository {
     private long maxId() {
         long maxId = 0;
         if (tasks.size() != 0) {
-            for(Map.Entry<Long, Task> entry : tasks.entrySet()) {
+            for (Map.Entry<Long, Task> entry : tasks.entrySet()) {
                 if (entry.getKey() > maxId) {
                     maxId = entry.getKey();
                 }
@@ -134,7 +136,7 @@ public class TaskRepository {
         return maxId;
     }
 
-    public void isEmpty () {
+    public void isEmpty() {
         if (tasks.size() == 0) {
             System.out.println(NONE_TASK);
             throw new InputMismatchException();
@@ -147,32 +149,33 @@ public class TaskRepository {
         } else if (id <= 0) {
             System.out.println(INCORRECT_NUMBER_ENTERED);
         } else {
-            tasks.remove(id);
-            projectRepository.getProjects()
+            projectRepository
+                    .getProjects()
                     .get(tasks.get(id).getProjectId())
                     .getTasks()
                     .remove(id);
+            tasks.remove(id);
             System.out.println("Задача №" + id + " удалена");
         }
     }
 
     public void removeAll() {
-        for (Map.Entry<Long, Task> entry : tasks.entrySet()){
-            tasks.remove(entry);
-        }
         for (Map.Entry<Long, Project> entry : projectRepository.getProjects().entrySet()) {
             entry.getValue().getTasks().clear();
         }
+        tasks.clear();
         System.out.println("Все задачи были удалены");
     }
 
     public void removeAllForProject(long projectId) {
         projectRepository.getProjects().get(projectId).getTasks().clear();
-        for (Map.Entry<Long, Task> entry : tasks.entrySet()){
+        for (Iterator<Map.Entry<Long, Task>> entryIterator = tasks.entrySet().iterator(); entryIterator.hasNext();){
+            Map.Entry<Long, Task> entry = entryIterator.next();
             if (entry.getValue().getProjectId() == projectId) {
-                tasks.remove(entry);
+                entryIterator.remove();
             }
         }
+
     }
 
 }

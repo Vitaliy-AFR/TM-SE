@@ -1,7 +1,6 @@
 package org.example.commands;
 
 import org.example.LineReader;
-import org.example.Task;
 import org.example.repository.ProjectRepository;
 import org.example.repository.TaskRepository;
 
@@ -12,7 +11,7 @@ public class DeleteProjectCommand extends Commands {
     private ProjectRepository projectRepository = ProjectRepository.getInstance();
     private TaskRepository taskRepository = TaskRepository.getInstance();
     private LineReader reader = LineReader.getInstance();
-    long id;
+    private long id;
 
     @Override
     public String nameOfCommand() {

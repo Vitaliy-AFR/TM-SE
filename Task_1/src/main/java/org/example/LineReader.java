@@ -8,7 +8,7 @@ import java.util.Scanner;
 @Data
 public class LineReader {
 
-    protected final String INCORRECT_NUMBER_ENTERED = "Введено некорректное число";
+    private final String INCORRECT_NUMBER_ENTERED = "Введено некорректное число";
 
     private static LineReader instance = new LineReader();
     private final Scanner scanner = new Scanner(System.in);

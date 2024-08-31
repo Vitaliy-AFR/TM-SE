@@ -3,7 +3,12 @@ package org.example;
 import lombok.*;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 @Data
 @Builder
@@ -11,20 +16,20 @@ public class Task {
     private final long id;
     private final long projectId;
     private String name;
-    String description;
-    private final GregorianCalendar startDate = new GregorianCalendar();
-    private GregorianCalendar endDate;
+    private String description;
+    private final LocalDateTime startDate = LocalDateTime.now();
+    private LocalDateTime endDate;
 
     @Override
     public String toString() {
-        SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
         return "Task{" +
                 "id=" + id +
                 ", projectId=" + projectId +
                 ", name='" + name + '\'' +
                 (description != null ? ", description='" + description + '\'' : "") +
-                ", startDate=" + formater.format(startDate.getTime()) +
-                (endDate != null ? ", endDate=" + formater.format(endDate.getTime()) : "") +
+                ", startDate=" + formatter.format(startDate) +
+                (endDate != null ? ", endDate=" + formatter.format(endDate) : "") +
                 '}';
     }
 }

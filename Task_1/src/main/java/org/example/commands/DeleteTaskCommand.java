@@ -1,13 +1,7 @@
 package org.example.commands;
 
 import org.example.LineReader;
-import org.example.Project;
-import org.example.Task;
-import org.example.TerminalLogic;
 import org.example.repository.TaskRepository;
-
-import java.util.Map;
-import java.util.Scanner;
 
 public class DeleteTaskCommand extends Commands{
 

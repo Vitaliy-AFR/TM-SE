@@ -1,7 +1,5 @@
 package org.example.commands;
 
-import org.example.TerminalLogic;
-
 public class ExitCommand extends Commands {
     @Override
     public String description() {
