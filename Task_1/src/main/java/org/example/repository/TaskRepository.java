@@ -80,7 +80,7 @@ public class TaskRepository {
                 }
             } catch (Exception e) {
                 if (!endDateString.equalsIgnoreCase("cancel"))
-                System.out.println("Дата введена неверно. Введите дату еще раз или \"cancel\" для отмены");
+                    System.out.println("Дата введена неверно. Введите дату еще раз или \"cancel\" для отмены");
             }
         }
 
@@ -93,10 +93,10 @@ public class TaskRepository {
     }
 
     public void findOne(long id) {
-        if (id > maxId()) {
-            System.out.println(TASK_NOT_EXIST);
-        } else if (id <= 0) {
+        if (id <= 0) {
             System.out.println(INCORRECT_NUMBER_ENTERED);
+        } else if (!tasks.containsKey(id)) {
+            System.out.println(TASK_NOT_EXIST);
         } else {
             System.out.println(tasks.get(id));
         }
@@ -144,10 +144,10 @@ public class TaskRepository {
     }
 
     public void remove(long id) {
-        if (id > maxId()) {
-            System.out.println(TASK_NOT_EXIST);
-        } else if (id <= 0) {
+        if (id <= 0) {
             System.out.println(INCORRECT_NUMBER_ENTERED);
+        } else if (!tasks.containsKey(id)) {
+            System.out.println(TASK_NOT_EXIST);
         } else {
             projectRepository
                     .getProjects()
@@ -169,7 +169,7 @@ public class TaskRepository {
 
     public void removeAllForProject(long projectId) {
         projectRepository.getProjects().get(projectId).getTasks().clear();
-        for (Iterator<Map.Entry<Long, Task>> entryIterator = tasks.entrySet().iterator(); entryIterator.hasNext();){
+        for (Iterator<Map.Entry<Long, Task>> entryIterator = tasks.entrySet().iterator(); entryIterator.hasNext(); ) {
             Map.Entry<Long, Task> entry = entryIterator.next();
             if (entry.getValue().getProjectId() == projectId) {
                 entryIterator.remove();

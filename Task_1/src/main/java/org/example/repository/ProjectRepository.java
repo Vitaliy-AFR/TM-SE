@@ -33,7 +33,7 @@ public class ProjectRepository {
     }
 
     public long createNew(String name) {
-        long id = projects.size() + 1;
+        long id = maxId() + 1;
         Project project = Project
                 .builder()
                 .name(name)
@@ -65,7 +65,7 @@ public class ProjectRepository {
                 }
             } catch (Exception e) {
                 if (!endDateString.equalsIgnoreCase("cancel"))
-                System.out.println("Дата введена неверно. Введите дату еще раз или \"cancel\" для отмены");
+                    System.out.println("Дата введена неверно. Введите дату еще раз или \"cancel\" для отмены");
             }
         }
 
@@ -78,10 +78,10 @@ public class ProjectRepository {
     }
 
     public void findOne(long id) {
-        if (id > maxId()) {
-            System.out.println(PROJECT_NOT_EXIST);
-        } else if (id <= 0) {
+        if (id <= 0) {
             System.out.println(INCORRECT_NUMBER_ENTERED);
+        } else if (!projects.containsKey(id)) {
+            System.out.println(PROJECT_NOT_EXIST);
         } else {
             System.out.println(projects.get(id));
         }
@@ -95,10 +95,10 @@ public class ProjectRepository {
     }
 
     public void remove(long id) {
-        if (id > maxId()) {
-            System.out.println(PROJECT_NOT_EXIST);
-        } else if (id <= 0) {
+        if (id <= 0) {
             System.out.println(INCORRECT_NUMBER_ENTERED);
+        } else if (!projects.containsKey(id)) {
+            System.out.println(PROJECT_NOT_EXIST);
         } else {
             projects.remove(id);
             System.out.println("Проект №" + id + " удален");
