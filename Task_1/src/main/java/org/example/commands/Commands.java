@@ -1,9 +1,12 @@
 package org.example.commands;
 
-import org.example.TerminalLogic;
+public abstract class Commands {
+    public abstract String nameOfCommand();
+    public abstract String description();
+    public abstract void execute();
 
-public interface Commands {
-    String nameOfCommand();
-    String description();
-    void execute(TerminalLogic terminalLogic);
+    protected final String INCORRECT_ANSWER = "Некорректный ответ";
+    protected final String NO = "no";
+    protected final String YES = "yes";
+
 }

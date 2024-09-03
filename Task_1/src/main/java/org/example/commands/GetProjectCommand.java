@@ -1,13 +1,16 @@
 package org.example.commands;
 
-import org.example.Project;
-import org.example.TerminalLogic;
+import org.example.LineReader;
+import org.example.repository.ProjectRepository;
 
 import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Scanner;
 
-public class GetProjectCommand implements Commands {
+
+public class GetProjectCommand extends Commands {
+
+    private LineReader reader = LineReader.getInstance();
+    private ProjectRepository projectRepository = ProjectRepository.getInstance();
+    private long id = 0;
 
     @Override
     public String description() {
@@ -20,32 +23,17 @@ public class GetProjectCommand implements Commands {
     }
 
     @Override
-    public void execute(TerminalLogic terminalLogic) {
-        Scanner scanner = terminalLogic.getScanner();
-        Map<Integer, Project> projects = terminalLogic.getProjectRepository().getProjects();
-        if (projects.size() == 0) {
-            System.out.println(terminalLogic.getNONE_PROJECT());
+    public void execute() {
+        try {
+            projectRepository.isEmpty();
+            System.out.println("Введите номер проекта:");
+            id = reader.readLong();
+        } catch (InputMismatchException e) {
             return;
         }
-        System.out.println("Введите номер проекта:");
-        int number = 0;
-        try {
-            number = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
-        }
-        if (number > projects.size()) {
-            System.out.println(terminalLogic.getPROJECT_NOT_EXIST());
-        } else if (number <= 0) {
-            System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
-        } else {
-            Project project = projects.get(number);
-            System.out.println("Name: " + project.getName());
-            System.out.println("Project № " + project.getNumber());
-            if (project.getDescription() != null) System.out.println("Description: " + project.getDescription());
-        }
-
+        projectRepository.findOne(id);
     }
+
+
 
 }

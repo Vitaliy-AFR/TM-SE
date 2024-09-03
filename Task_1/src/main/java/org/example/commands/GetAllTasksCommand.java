@@ -1,12 +1,11 @@
 package org.example.commands;
 
-import org.example.Task;
-import org.example.TerminalLogic;
+import org.example.repository.TaskRepository;
 
-import java.util.Map;
-import java.util.Scanner;
+public class GetAllTasksCommand extends Commands{
 
-public class GetAllTasksCommand implements Commands{
+    private TaskRepository taskRepository = TaskRepository.getInstance();
+
     @Override
     public String nameOfCommand() {
         return "get all tasks";
@@ -18,22 +17,13 @@ public class GetAllTasksCommand implements Commands{
     }
 
     @Override
-    public void execute(TerminalLogic terminalLogic) {
-        Map<String, Task> tasks = terminalLogic.getTaskRepository().getTasks();
-        if (!tasksExist(terminalLogic)) {
+    public void execute() {
+        try {
+            taskRepository.isEmpty();
+        } catch (Exception e) {
             return;
         }
-        for (Task task : tasks.values()) {
-            System.out.println(task.toString());
-        }
+        taskRepository.findAll();
     }
 
-    private boolean tasksExist(TerminalLogic terminalLogic) {
-        Map<String, Task> tasks = terminalLogic.getTaskRepository().getTasks();
-        if (tasks.size() == 0) {
-            System.out.println(terminalLogic.getNONE_TASK());
-            return false;
-        }
-        return true;
-    }
 }

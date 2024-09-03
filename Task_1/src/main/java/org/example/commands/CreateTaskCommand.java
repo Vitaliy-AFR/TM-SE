@@ -1,14 +1,21 @@
 package org.example.commands;
 
-import org.example.Project;
-import org.example.Task;
-import org.example.TerminalLogic;
+import org.example.LineReader;
+import org.example.repository.ProjectRepository;
+import org.example.repository.TaskRepository;
 
-import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Scanner;
+public class CreateTaskCommand extends Commands{
 
-public class CreateTaskCommand implements Commands{
+    private LineReader reader = LineReader.getInstance();
+    private TaskRepository taskRepository = TaskRepository.getInstance();
+    private ProjectRepository projectRepository = ProjectRepository.getInstance();
+    private long id;
+    private long projectId;
+    private String name;
+
+    private final String NO_DESCRIPTION = "Задача %s пока не содержит описание. Вы можете добавить описание позже.";
+    private final String NO_END_DATE = "Задача %s пока не содержит дату окончания. Вы можете добавить ее позже.";
+
     @Override
     public String nameOfCommand() {
         return "create task";
@@ -20,80 +27,49 @@ public class CreateTaskCommand implements Commands{
     }
 
     @Override
-    public void execute(TerminalLogic terminalLogic) {
-        Scanner scanner = terminalLogic.getScanner();
-        Map<Integer, Project> projects = terminalLogic.getProjectRepository().getProjects();
-        if (projects.size() == 0) {
-            System.out.println(terminalLogic.getNONE_PROJECT());
-            return;
-        }
-        int numberOfProject = getProjectNumber(terminalLogic);
-        if (!correctProjectNumber(terminalLogic, numberOfProject)) {
-            return;
-        }
-        System.out.println("Введите название задачи:");
-        String nameOfTask;
-        while (true) {
-            nameOfTask = scanner.nextLine();
-            if (terminalLogic.getTaskRepository().getTasks().containsKey(nameOfTask)) {
-                System.out.println("Задача с таким именем уже существует в системе. Введите другое имя или cancel для отмены");
-            } else if (nameOfTask.equalsIgnoreCase("cancel")) {
-                return;
-            } else {
-                break;
-            }
-        }
-        Project project = projects.get(numberOfProject);
-        int numberOfTask = project.getTasks().size() + 1;
-        Task task = Task.builder().name(nameOfTask).number(numberOfTask).numberOfProject(numberOfProject).build();
-        terminalLogic.getTaskRepository().getTasks().put(nameOfTask, task);
-        project.getTasks().add(terminalLogic.getTaskRepository().getTasks().get(nameOfTask));
-        System.out.println("Вы хотите добавить описание к задаче? yes/no");
-        String answer = scanner.nextLine();
-        if (addDescription(answer)) {
-            String description = scanner.nextLine();
-            project.getTasks().get(numberOfTask - 1).setDescription(description);
-        }
-        System.out.println(String.format("В проекте №%d создана задача №%d: %s", numberOfProject, numberOfTask, nameOfTask));
-    }
-
-    private int getProjectNumber(TerminalLogic terminalLogic) {
-        Scanner scanner = terminalLogic.getScanner();
-        System.out.println("Введите номер проекта, к которому нужно добавить задачу:");
-        int number = 0;
+    public void execute() {
         try {
-            number = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            scanner.nextLine();
+            projectRepository.isEmpty();
+            System.out.println("Введите номер проекта, к которому нужно добавить задачу:");
+            projectId = reader.readLong();
+        } catch (Exception e) {
+            return;
         }
-        return number;
+        if (!projectRepository.getProjects().containsKey(projectId)) {
+            projectRepository.findOne(projectId);
+        } else {
+            System.out.println("Введите имя задачи:");
+            name = reader.readString();
+            id = taskRepository.createNewTask(projectId, name);
+            addDescription();
+            addEndDate();
+            System.out.println("Создана задача:");
+            taskRepository.findOne(id);
+        }
+
     }
 
-
-    private boolean correctProjectNumber(TerminalLogic terminalLogic, int number) {
-        Map<Integer, Project> projects = terminalLogic.getProjectRepository().getProjects();
-        if (number > projects.size()) {
-            System.out.println(terminalLogic.getPROJECT_NOT_EXIST());
-            return false;
-        } else if (number <= 0) {
-            System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
-            return false;
+    private void addDescription () {
+        System.out.println("Вы хотите добавить описание к задаче? yes/no");
+        String answer = reader.readString();
+        if (answer.equalsIgnoreCase(YES)) {
+            taskRepository.addDescription(id);
+        } else if (answer.equalsIgnoreCase(NO)) {
+            System.out.println(String.format(NO_DESCRIPTION, name));
         } else {
-            return true;
+            System.out.println(INCORRECT_ANSWER + ". " + String.format(NO_DESCRIPTION, name));
         }
     }
 
-    private boolean addDescription (String answer) {
-        if (answer.equalsIgnoreCase("no")) {
-            System.out.println("Задача пока не содержит описание, вы можете добавить описание позже");
-            return false;
-        } else if (answer.equalsIgnoreCase("yes")) {
-            System.out.println("Введите описание задачи:");
-            return true;
+    private void addEndDate() {
+        System.out.println("Вы хотите добавить дату окончания задачи? yes/no");
+        String answer = reader.readString();
+        if (answer.equalsIgnoreCase(YES)) {
+            taskRepository.addEndDate(id);
+        } else if (answer.equalsIgnoreCase(NO)) {
+            System.out.println(String.format(NO_END_DATE, name));
         } else {
-            System.out.println("Некорректный ответ. Задача пока не содержит описание, вы можете добавить описание позже");
-            return false;
+            System.out.println(INCORRECT_ANSWER + ". " + String.format(NO_END_DATE, name));
         }
     }
 

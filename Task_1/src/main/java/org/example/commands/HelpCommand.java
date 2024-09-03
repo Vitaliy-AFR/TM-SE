@@ -1,10 +1,9 @@
 package org.example.commands;
 
-import org.example.TerminalLogic;
+import org.example.repository.CommandRepository;
 
-import java.util.Map;
+public class HelpCommand extends Commands{
 
-public class HelpCommand implements Commands{
     @Override
     public String description() {
         return "Вызов справки";
@@ -16,11 +15,9 @@ public class HelpCommand implements Commands{
     }
 
     @Override
-    public void execute(TerminalLogic terminalLogic) {
-        Map<String, Commands> commands = terminalLogic.getCommands();
-        System.out.println("Список команд:");
-        for (Map.Entry<String, Commands> entry : commands.entrySet()) {
-            System.out.println(entry.getValue().nameOfCommand() + " - " + entry.getValue().description());
-        }
+    public void execute() {
+        CommandRepository commandRepository = new CommandRepository();
+        commandRepository.getAllCommands();
+
     }
 }

@@ -2,18 +2,18 @@ package org.example.commands;
 
 import org.example.repository.ProjectRepository;
 
-public class GetAllProjectsCommand extends Commands{
+public class DeleteAllProjectsCommand extends Commands{
 
     private ProjectRepository projectRepository = ProjectRepository.getInstance();
 
     @Override
-    public String description() {
-        return "Показать список всех проектов";
+    public String nameOfCommand() {
+        return "delete all projects";
     }
 
     @Override
-    public String nameOfCommand() {
-        return "get all projects";
+    public String description() {
+        return "Удалить все проекты";
     }
 
     @Override
@@ -23,6 +23,6 @@ public class GetAllProjectsCommand extends Commands{
         } catch (Exception e) {
             return;
         }
-        projectRepository.findAll();
+        projectRepository.removeAll();
     }
 }

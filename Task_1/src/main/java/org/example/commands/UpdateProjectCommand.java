@@ -1,13 +1,16 @@
 package org.example.commands;
 
-import org.example.Project;
-import org.example.TerminalLogic;
+import org.example.LineReader;
+import org.example.repository.ProjectRepository;
 
 import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Scanner;
 
-public class UpdateProjectCommand implements Commands {
+public class UpdateProjectCommand extends Commands {
+
+    private ProjectRepository projectRepository = ProjectRepository.getInstance();
+    private LineReader reader = LineReader.getInstance();
+    private long id = 0;
+
     @Override
     public String description() {
         return "Изменить проект";
@@ -19,42 +22,37 @@ public class UpdateProjectCommand implements Commands {
     }
 
     @Override
-    public void execute(TerminalLogic terminalLogic) {
-        Scanner scanner = terminalLogic.getScanner();
-        Map<Integer, Project> projects = terminalLogic.getProjectRepository().getProjects();
-        if (projects.size() == 0) {
-            System.out.println(terminalLogic.getNONE_PROJECT());
+    public void execute() {
+        try {
+            projectRepository.isEmpty();
+            System.out.println("Введите номер проекта:");
+            id = reader.readLong();
+        } catch (InputMismatchException e) {
             return;
         }
-        System.out.println("Введите номер проекта:");
-        int number = 0;
-        try {
-            number = scanner.nextInt();
-            scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println(terminalLogic.getINCORRECT_NUMBER_ENTERED());
-        }
-        if (number > projects.size()) {
-            System.out.println(terminalLogic.getPROJECT_NOT_EXIST());
+        if (!projectRepository.getProjects().containsKey(id)) {
+            projectRepository.findOne(id);
         } else {
-            while (true) {
-                System.out.println("Введите название графы, которую вы хотите изменить: name/description (чтобы отменить изменение, введите cancel)");
-                String column = scanner.nextLine();
-                if (column.equalsIgnoreCase("cancel")) {
-                    break;
-                } else if (column.equalsIgnoreCase("name")) {
-                    System.out.println("Введите новое название проекта");
-                    column = scanner.nextLine();
-                    projects.get(number).setName(column);
-                    continue;
-                } else if (column.equalsIgnoreCase("description")) {
-                    System.out.println("Введите новое описание проекта");
-                    column = scanner.nextLine();
-                    projects.get(number).setDescription(column);
-                    continue;
-                }
-            }
+            updateProject();
+        }
+    }
 
+    private void updateProject(){
+        while (true) {
+            System.out.println("Введите название графы, которую вы хотите изменить: name/description/end date (чтобы отменить изменение, введите cancel)");
+            String column = reader.readString();
+            if (column.equalsIgnoreCase("cancel")) {
+                break;
+            } else if (column.equalsIgnoreCase("name")) {
+                projectRepository.addNewNameProject(id);
+                System.out.println("Имя проекта успешно изменено");
+            } else if (column.equalsIgnoreCase("description")) {
+                projectRepository.addDescription(id);
+                System.out.println("Описание проекта успешно изменено");
+            } else if (column.equalsIgnoreCase("end date")) {
+                projectRepository.addEndDate(id);
+                System.out.println("Дата окончания проекта успешно изменена");
+            }
         }
     }
 

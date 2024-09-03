@@ -1,13 +1,16 @@
 package org.example.commands;
 
-import org.example.Project;
-import org.example.Task;
-import org.example.TerminalLogic;
+import org.example.LineReader;
+import org.example.repository.TaskRepository;
 
-import java.util.Map;
-import java.util.Scanner;
+import java.util.InputMismatchException;
 
-public class UpdateTaskCommand implements Commands{
+public class UpdateTaskCommand extends Commands{
+
+    private TaskRepository taskRepository = TaskRepository.getInstance();
+    private LineReader reader = LineReader.getInstance();
+    private long id;
+
     @Override
     public String nameOfCommand() {
         return "update task";
@@ -19,39 +22,38 @@ public class UpdateTaskCommand implements Commands{
     }
 
     @Override
-    public void execute(TerminalLogic terminalLogic) {
-        Map<String, Task> tasks = terminalLogic.getTaskRepository().getTasks();
-        Map<Integer, Project> projects = terminalLogic.getProjectRepository().getProjects();
-        Scanner scanner = terminalLogic.getScanner();
-        if (!tasksExist(terminalLogic)) {
+    public void execute() {
+        try {
+            taskRepository.isEmpty();
+            System.out.println("Введите номер задачи:");
+            id = reader.readLong();
+        } catch (InputMismatchException e) {
             return;
         }
-        String nameOfTask = nameOfTask(terminalLogic);
-        if (!tasks.containsKey(nameOfTask)) {
-            System.out.println(String.format(terminalLogic.getTASK_NOT_EXIST(), nameOfTask));
-            return;
+        if (!taskRepository.getTasks().containsKey(id)) {
+            taskRepository.findOne(id);
+        } else {
+            updateTask();
         }
-        Task task = tasks.get(nameOfTask);
-        System.out.println("Введите новое описание задачи:");
-        String description = scanner.nextLine();
-        tasks.get(nameOfTask).setDescription(description);
-        projects.get(task.getNumberOfProject()).getTasks().get(task.getNumber() - 1).setDescription(description);
     }
 
-    private boolean tasksExist(TerminalLogic terminalLogic) {
-        Map<String, Task> tasks = terminalLogic.getTaskRepository().getTasks();
-        if (tasks.size() == 0) {
-            System.out.println(terminalLogic.getNONE_TASK());
-            return false;
+    private void updateTask(){
+        while (true) {
+            System.out.println("Введите название графы, которую вы хотите изменить: name/description/end date (чтобы отменить изменение, введите cancel)");
+            String column = reader.readString();
+            if (column.equalsIgnoreCase("cancel")) {
+                break;
+            } else if (column.equalsIgnoreCase("name")) {
+                taskRepository.addNewNameTask(id);
+                System.out.println("Имя задачи успешно изменено");
+            } else if (column.equalsIgnoreCase("description")) {
+                taskRepository.addDescription(id);
+                System.out.println("Описание задачи успешно изменено");
+            } else if (column.equalsIgnoreCase("end date")) {
+                taskRepository.addEndDate(id);
+                System.out.println("Дата задачи успешно изменена");
+            }
         }
-        return true;
-    }
-
-    private String nameOfTask (TerminalLogic terminalLogic) {
-        Scanner scanner = terminalLogic.getScanner();
-        System.out.println("Введите имя задачи:");
-        String nameOfTask = scanner.nextLine();
-        return nameOfTask;
     }
 
 }
